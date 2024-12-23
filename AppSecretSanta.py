@@ -479,7 +479,7 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
 
     st.markdown("----")
     st.markdown("")
-    st.markdown("----")
+    
        # Lista de palabras
     palabras = [
         "Python", "SQL", "Power BI", "Tableau", "Looker", "Qlik Sense", "Streamlit",
@@ -705,7 +705,7 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
 
     st.markdown("----")
         
-    st.subheader("Para mi amigo Tin")
+    st.subheader("Para mi amigo")
     st.image(
         "Carta.png",
 
@@ -723,10 +723,10 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
     
     st.markdown("### 🎶 Más canciones para él 🎧")
     st.audio("Para un amigo.mp3")
-    st.markdown("----")
+    st.markdown("")
     st.audio("El Gran Goat.mp3")
 
-    st.markdown("----")
+    st.markdown("")
     st.audio("El Gran Tin.mp3")
     
     st.markdown("----")
