@@ -479,7 +479,7 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
 
     st.markdown("----")
     st.markdown("")
-
+    st.markdown("----")
        # Lista de palabras
     palabras = [
         "Python", "SQL", "Power BI", "Tableau", "Looker", "Qlik Sense", "Streamlit",
@@ -557,6 +557,8 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
         letras_usadas = ", ".join(sorted(st.session_state.letras_usadas)).upper()
         st.write(f"Letras usadas: {letras_usadas}")
 
+    st.markdown("----")
+    
     # Título principal
     st.title("🔢 Juego de Memorización Numérica")
     st.markdown(
@@ -625,7 +627,9 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
         st.session_state.mostrar = True
         st.session_state.puntuacion = 0
         st.rerun()
-
+        
+    st.markdown("----")
+    
     st.markdown(" ")
     # Configuración inicial del estado
     if "tiempo_restante" not in st.session_state:
@@ -699,8 +703,8 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
             del st.session_state["juego_activo"]
             st.rerun()
 
-    
-    st.subdivider()
+    st.markdown("----")
+        
     st.subheader("Para mi amigo Tin")
     st.image(
         "Carta.png",
