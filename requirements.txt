@@ -1,27 +1,7 @@
 
 
-pandas @ file:///C:/b/abs_fej9bi0gew/croot/pandas_1702318041921/work/dist/pandas-2.1.4-cp311-cp311-win_amd64.whl#sha256=d3609b7cc3e3c4d99ad640a4b8e710ba93ccf967ab8e5245b91033e0200f9286
-pandas-gbq==0.21.0
-pandocfilters @ file:///opt/conda/conda-bld/pandocfilters_1643405455980/work
-
-python-dateutil @ file:///tmp/build/80754af9/python-dateutil_1626374649649/work
-python-dotenv @ file:///C:/ci_311/python-dotenv_1676455170580/work
-python-json-logger @ file:///C:/b/abs_cblnsm6puj/croot/python-json-logger_1683824130469/work
-python-lsp-black @ file:///C:/ci_311/python-lsp-black_1678721855627/work
-python-lsp-jsonrpc==1.0.0
-python-lsp-server @ file:///C:/b/abs_catecj7fv1/croot/python-lsp-server_1681930405912/work
-python-slugify @ file:///tmp/build/80754af9/python-slugify_1620405669636/work
-python-snappy @ file:///C:/ci_311/python-snappy_1676446060182/work
-pytoolconfig @ file:///C:/b/abs_f2j_xsvrpn/croot/pytoolconfig_1701728751207/work
-
-requests @ file:///C:/b/abs_474vaa3x9e/croot/requests_1707355619957/work
-requests-file @ file:///Users/ktietz/demo/mc3/conda-bld/requests-file_1629455781986/work
-requests-oauthlib==1.3.1
-requests-toolbelt @ file:///C:/b/abs_2fsmts66wp/croot/requests-toolbelt_1690874051210/work
 
 streamlit==1.41.0
 streamlit-authenticator==0.3.1
 streamlit-chat==0.1.1
 
-zope.interface @ file:///C:/ci_311/zope.interface_1676439868776/work
-zstandard==0.19.0
