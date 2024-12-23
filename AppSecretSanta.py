@@ -619,13 +619,87 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
     st.write(f"**Puntuación:** {st.session_state.puntuacion}")
 
     # Botón para reiniciar el juego
-    if st.button("🔄 Reiniciar Juego"):
+    if st.button("🔄 Reiniciar"):
         st.session_state.nivel = 1
         st.session_state.secuencia = [random.randint(0, 9) for _ in range(5)]
         st.session_state.mostrar = True
         st.session_state.puntuacion = 0
         st.rerun()
-        
+
+    st.markdown(" ")
+    # Configuración inicial del estado
+    if "tiempo_restante" not in st.session_state:
+        st.session_state.tiempo_restante = 30
+        st.session_state.puntaje = 0
+        st.session_state.numero1 = random.randint(1, 20)
+        st.session_state.numero2 = random.randint(1, 20)
+        st.session_state.correcto = None
+        st.session_state.inicio = time.time()
+        st.session_state.juego_activo = True
+    
+    # Función para generar nueva suma
+    def nueva_suma():
+        st.session_state.numero1 = random.randint(1, 20)
+        st.session_state.numero2 = random.randint(1, 20)
+    
+    # Función para verificar respuesta
+    def verificar_respuesta(respuesta):
+        suma_correcta = st.session_state.numero1 + st.session_state.numero2
+        if respuesta == suma_correcta:
+            st.session_state.correcto = True
+            st.session_state.tiempo_restante += 5
+            st.session_state.puntaje += 10
+            nueva_suma()
+        else:
+            st.session_state.correcto = False
+            st.session_state.tiempo_restante -= 5
+        # Actualizar inmediatamente
+        st.rerun()
+    
+    # Actualización del temporizador
+    tiempo_actual = time.time()
+    if st.session_state.juego_activo:
+        tiempo_transcurrido = tiempo_actual - st.session_state.inicio
+        st.session_state.tiempo_restante = max(0, st.session_state.tiempo_restante - tiempo_transcurrido)
+        st.session_state.inicio = tiempo_actual
+    
+    # Mostrar reloj en tiempo real
+    st.title("🧮 Juego de Sumas Rápidas")
+    st.write(f"⏱️ Tiempo restante: {st.session_state.tiempo_restante:.1f} segundos")
+    st.write(f"🏆 Puntaje: {st.session_state.puntaje}")
+    
+    if st.session_state.tiempo_restante > 0:
+        # Mostrar suma actual
+        st.subheader(f"¿Cuánto es {st.session_state.numero1} + {st.session_state.numero2}?")
+    
+        # Campo para respuesta
+        respuesta_usuario = st.number_input("Escribe tu respuesta:", min_value=0, step=1, key="respuesta", label_visibility="collapsed")
+    
+        # Botón para verificar respuesta
+        if st.button("Responder"):
+            verificar_respuesta(respuesta_usuario)
+    
+        # Mostrar si la respuesta fue correcta o incorrecta
+        if st.session_state.correcto is not None:
+            if st.session_state.correcto:
+                st.success("¡Correcto! ⏰ +5 segundos")
+            else:
+                st.error("¡Incorrecto! ⏰ -5 segundos")
+    else:
+        st.error("⏰ ¡Se acabó el tiempo!")
+        st.write(f"Tu puntaje final es: {st.session_state.puntaje}")
+        st.session_state.juego_activo = False
+        if st.button("Reiniciar"):
+            del st.session_state["tiempo_restante"]
+            del st.session_state["puntaje"]
+            del st.session_state["numero1"]
+            del st.session_state["numero2"]
+            del st.session_state["correcto"]
+            del st.session_state["inicio"]
+            del st.session_state["juego_activo"]
+            st.rerun()
+
+    
     st.subdivider()
     st.subheader("Para mi amigo Tin")
     st.image(
