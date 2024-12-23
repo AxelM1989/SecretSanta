@@ -469,76 +469,82 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
     st.markdown("----")
     st.markdown("")
 
-    palabras = [
-        "Python", "SQL", "Power BI", "Tableau", "Looker", "Qlik Sense", "Streamlit",
-        "Business Intelligence", "Data Analysis", "Data Science", "Data Engineering",
-        "Data Visualization", "Primary Key", "Foreign Key", "Key Performance Indicator",
-        "ETL", "ELT", "Data Mining", "Datawarehouse", "Data Lake", "Data Governance",
-        "Data Mart", "Database", "NO SQL", "Fact Table", "Dimension Table",
-        "Artificial Intelligence", "API", "Big Data", "Business Analytics", "Clustering",
-        "Cardinality", "Dashboard", "Data Modeling", "Data Source", "Data Transformation",
-        "Entity", "Exploratory Data Analysis", "Forecast", "Hierarchy", "Histogram",
-        "Hadoop", "Index", "Insights", "Internet Of Things", "JSON", "CSV", "Parquet",
-        "Avro", "Key", "Logical Model", "Machine Learning", "Measure", "Metric",
-        "Metadata", "Normalization", "Outlier", "Predictive Analysis", "Descriptive Analysis",
-        "Query", "Relationship", "Relational Database", "Report", "Row", "Schema",
-        "Segmentation", "Snowflake Model", "Star Model", "Stored Procedure",
-        "Structured Data", "Table", "Left Join", "Inner Join", "Unique Key",
-        "Web Analytics"
+   # Lista de palabras
+palabras = [
+    "Python", "SQL", "Power BI", "Tableau", "Looker", "Qlik Sense", "Streamlit",
+    "Business Intelligence", "Data Analysis", "Data Science", "Data Engineering",
+    "Data Visualization", "Primary Key", "Foreign Key", "Key Performance Indicator",
+    "ETL", "ELT", "Data Mining", "Datawarehouse", "Data Lake", "Data Governance",
+    "Data Mart", "Database", "NO SQL", "Fact Table", "Dimension Table",
+    "Artificial Intelligence", "API", "Big Data", "Business Analytics", "Clustering",
+    "Cardinality", "Dashboard", "Data Modeling", "Data Source", "Data Transformation",
+    "Entity", "Exploratory Data Analysis", "Forecast", "Hierarchy", "Histogram",
+    "Hadoop", "Index", "Insights", "Internet Of Things", "JSON", "CSV", "Parquet",
+    "Avro", "Key", "Logical Model", "Machine Learning", "Measure", "Metric",
+    "Metadata", "Normalization", "Outlier", "Predictive Analysis", "Descriptive Analysis",
+    "Query", "Relationship", "Relational Database", "Report", "Row", "Schema",
+    "Segmentation", "Snowflake Model", "Star Model", "Stored Procedure",
+    "Structured Data", "Table", "Left Join", "Inner Join", "Unique Key",
+    "Web Analytics"
+]
+
+# Estado inicial del juego
+if "palabra_secreta" not in st.session_state:
+    st.session_state.palabra_secreta = random.choice(palabras).lower()
+    st.session_state.palabra_oculta = [
+        "_" if c != " " else " " for c in st.session_state.palabra_secreta
     ]
+    st.session_state.intentos = 5
+    st.session_state.letras_usadas = set()
 
-    # Estado inicial del juego
-    if "palabra_secreta" not in st.session_state:
-        st.session_state.palabra_secreta = random.choice(palabras).lower()
-        st.session_state.palabra_oculta = [
-            "_" if c != " " else " " for c in st.session_state.palabra_secreta
-        ]
-        st.session_state.intentos = 5
-        st.session_state.letras_usadas = set()
+st.title("Adivina la palabra")
+st.write("Debes colocar letras hasta poder adivinar la palabra oculta. Tienes hasta 5 intentos fallidos. Las palabras son todas relacionadas al área de BI y dado que muchas de ellas son en inglés, para unificar criterios, todas las palabras incluidas que puedan aparecer, son en inglés")
 
-    st.title("Adivina la palabra")
+# Mostrar progreso de la palabra
+progreso = "".join(
+    [
+        c.upper() if c in st.session_state.letras_usadas else "_" if c != " " else "[ ]"
+        for c in st.session_state.palabra_secreta
+    ]
+)
+st.write(f"Palabra: {progreso}")
+st.write(f"Intentos restantes: {st.session_state.intentos}")
 
-    # Mostrar progreso de la palabra
-    progreso = "".join(
-        [
-            c.upper() if c in st.session_state.letras_usadas else "_" if c != " " else "[ ]"
-            for c in st.session_state.palabra_secreta
-        ]
-    )
-    st.write(f"Palabra: {progreso}")
-    st.write(f"Intentos restantes: {st.session_state.intentos}")
+# Botón para reiniciar el juego
+if st.button("🔄 Reiniciar Juego"):
+    st.session_state.palabra_secreta = random.choice(palabras).lower()
+    st.session_state.palabra_oculta = [
+        "_" if c != " " else " " for c in st.session_state.palabra_secreta
+    ]
+    st.session_state.intentos = 5
+    st.session_state.letras_usadas = set()
+    st.rerun()
 
-    # Ganar o perder
-    if "_" not in progreso.replace("[ ]", " "):
-        st.success(f"¡Felicidades! Has adivinado la palabra: {st.session_state.palabra_secreta.title()}")
-        if st.button("Jugar de nuevo"):
-            st.session_state.clear()
-            st.rerun()
-    elif st.session_state.intentos <= 0:
-        st.error(f"¡Has perdido! La palabra era: {st.session_state.palabra_secreta.title()}")
-        if st.button("Jugar de nuevo"):
-            st.session_state.clear()
-            st.rerun()
-    else:
-        # Entrada del usuario
-        letra = st.text_input("Ingresa una letra:", max_chars=1).lower()
+# Verificar si el usuario ha ganado o perdido
+if "_" not in progreso.replace("[ ]", " "):
+    st.success(f"¡Felicidades! Has adivinado la palabra: {st.session_state.palabra_secreta.title()}")
+elif st.session_state.intentos <= 0:
+    st.error(f"¡Has perdido! La palabra era: {st.session_state.palabra_secreta.title()}")
+else:
+    # Entrada del usuario
+    letra = st.text_input("Ingresa una letra:", max_chars=1).lower()
 
-        if letra and letra.isalpha() and letra not in st.session_state.letras_usadas:
-            st.session_state.letras_usadas.add(letra)
+    if letra and letra.isalpha() and letra not in st.session_state.letras_usadas:
+        st.session_state.letras_usadas.add(letra)
 
-            # Actualizar la palabra oculta si la letra es correcta
-            if letra in st.session_state.palabra_secreta:
-                st.success(f"¡Correcto! La letra '{letra.upper()}' está en la palabra.")
-            else:
-                st.session_state.intentos -= 1
-                st.warning(f"La letra '{letra.upper()}' no está en la palabra.")
+        # Actualizar la palabra oculta si la letra es correcta
+        if letra in st.session_state.palabra_secreta:
+            st.success(f"¡Correcto! La letra '{letra.upper()}' está en la palabra.")
+        else:
+            st.session_state.intentos -= 1
+            st.warning(f"La letra '{letra.upper()}' no está en la palabra.")
 
-            st.rerun()
+        st.rerun()
 
-        # Mostrar letras usadas
-        if st.session_state.letras_usadas:
-            letras_usadas = ", ".join(sorted(st.session_state.letras_usadas)).upper()
-            st.write(f"Letras usadas: {letras_usadas}")
+# Mostrar letras usadas
+if st.session_state.letras_usadas:
+    letras_usadas = ", ".join(sorted(st.session_state.letras_usadas)).upper()
+    st.write(f"Letras usadas: {letras_usadas}")
 
     # Título principal
     st.title("🔢 Juego de Memorización Numérica")
@@ -608,7 +614,9 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
         st.session_state.mostrar = True
         st.session_state.puntuacion = 0
         st.rerun()
-
+        
+    st.subdivider()
+    st.subheader("Para mi amigo Tin")
     st.image(
         "Carta.png",
 
