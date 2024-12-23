@@ -712,9 +712,29 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
         use_container_width=True,  # Ajuste para usar el ancho del contenedor
     )
 
+    st.markdown("----")
+    
     st.image(
         "GOAT2.webp",
 
         use_container_width=True,  # Ajuste para usar el ancho del contenedor
     )
+    
+    
+    st.markdown("### 🎶 Más canciones para él 🎧")
+    st.audio("Para un amigo.mp3")
+    st.markdown("----")
+    st.audio("El Gran Goat.mp3")
 
+    st.markdown("----")
+    st.audio("El Gran Tin.mp3")
+    
+    st.markdown("----")
+    st.markdown(
+    """
+    <div style="text-align: right; color: purple; font-size: 18px;">
+        Made with 💜 by Axel Moriena
+    </div>
+    """,
+    unsafe_allow_html=True
+)
