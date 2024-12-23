@@ -1,5 +1,7 @@
 import streamlit as st
 import random
+import time
+
 
 # Configuración de la página
 st.set_page_config(
@@ -25,6 +27,7 @@ if "nombre_adivinado" not in st.session_state:
     st.session_state.nombre_adivinado = False
 if "omitido" not in st.session_state:
     st.session_state.omitido = False
+
 
 # Función para avanzar de pista
 def avanzar_pista():
@@ -313,12 +316,12 @@ elif st.session_state.pista_actual == 6:
         st.title("👏 Eres el/la **** amo/a 👨‍🎓👩‍🎓 🤴")
         st.subheader("Sherlock te está buscando 🕵️ 👀 ")
         st.success(f"¡Felicidades! Al adivinar todas las pistas, has descubierto el misterio: {nombre_correcto} es mi Secret Santa🎉")
-        st.balloons()
         st.session_state.rinconcito_visible = True
         st.session_state.nombre_adivinado = True
         if st.checkbox("Click para continuar"):
             st.write(
                 "Has completado el desafío con éxito. En el menú de la izquierda puedes acceder a El Rinconcito de Tin")
+
 
 
     else:
@@ -329,10 +332,9 @@ elif st.session_state.pista_actual == 6:
     # Verificación del nombre
         if nombre_input.lower() == nombre_correcto.lower():
             st.success(f"¡Felicidades! Has descubierto el nombre: {nombre_correcto} es mi Secret Santa🎉")
-            st.balloons()
             st.session_state.rinconcito_visible = True
             st.session_state.nombre_adivinado = True
-            if st.checkbox("Click para continuar"):
+            if st.checkbox("Desbloquear el Rinconcito de Tin"):
                 st.write(
                  "Has completado el desafío con éxito. En el menú de la izquierda puedes acceder a El Rinconcito de Tin")
 
@@ -355,7 +357,9 @@ elif st.session_state.pista_actual == 6:
 
 
 # --------- MENSAJE FINAL ----------
+
 if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
+
     st.markdown("---")
     st.markdown(
 
@@ -464,6 +468,146 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
 
     st.markdown("----")
     st.markdown("")
+
+    palabras = [
+        "Python", "SQL", "Power BI", "Tableau", "Looker", "Qlik Sense", "Streamlit",
+        "Business Intelligence", "Data Analysis", "Data Science", "Data Engineering",
+        "Data Visualization", "Primary Key", "Foreign Key", "Key Performance Indicator",
+        "ETL", "ELT", "Data Mining", "Datawarehouse", "Data Lake", "Data Governance",
+        "Data Mart", "Database", "NO SQL", "Fact Table", "Dimension Table",
+        "Artificial Intelligence", "API", "Big Data", "Business Analytics", "Clustering",
+        "Cardinality", "Dashboard", "Data Modeling", "Data Source", "Data Transformation",
+        "Entity", "Exploratory Data Analysis", "Forecast", "Hierarchy", "Histogram",
+        "Hadoop", "Index", "Insights", "Internet Of Things", "JSON", "CSV", "Parquet",
+        "Avro", "Key", "Logical Model", "Machine Learning", "Measure", "Metric",
+        "Metadata", "Normalization", "Outlier", "Predictive Analysis", "Descriptive Analysis",
+        "Query", "Relationship", "Relational Database", "Report", "Row", "Schema",
+        "Segmentation", "Snowflake Model", "Star Model", "Stored Procedure",
+        "Structured Data", "Table", "Left Join", "Inner Join", "Unique Key",
+        "Web Analytics"
+    ]
+
+    # Estado inicial del juego
+    if "palabra_secreta" not in st.session_state:
+        st.session_state.palabra_secreta = random.choice(palabras).lower()
+        st.session_state.palabra_oculta = [
+            "_" if c != " " else " " for c in st.session_state.palabra_secreta
+        ]
+        st.session_state.intentos = 5
+        st.session_state.letras_usadas = set()
+
+    st.title("Adivina la palabra")
+
+    # Mostrar progreso de la palabra
+    progreso = "".join(
+        [
+            c.upper() if c in st.session_state.letras_usadas else "_" if c != " " else "[ ]"
+            for c in st.session_state.palabra_secreta
+        ]
+    )
+    st.write(f"Palabra: {progreso}")
+    st.write(f"Intentos restantes: {st.session_state.intentos}")
+
+    # Ganar o perder
+    if "_" not in progreso.replace("[ ]", " "):
+        st.success(f"¡Felicidades! Has adivinado la palabra: {st.session_state.palabra_secreta.title()}")
+        if st.button("Jugar de nuevo"):
+            st.session_state.clear()
+            st.rerun()
+    elif st.session_state.intentos <= 0:
+        st.error(f"¡Has perdido! La palabra era: {st.session_state.palabra_secreta.title()}")
+        if st.button("Jugar de nuevo"):
+            st.session_state.clear()
+            st.rerun()
+    else:
+        # Entrada del usuario
+        letra = st.text_input("Ingresa una letra:", max_chars=1).lower()
+
+        if letra and letra.isalpha() and letra not in st.session_state.letras_usadas:
+            st.session_state.letras_usadas.add(letra)
+
+            # Actualizar la palabra oculta si la letra es correcta
+            if letra in st.session_state.palabra_secreta:
+                st.success(f"¡Correcto! La letra '{letra.upper()}' está en la palabra.")
+            else:
+                st.session_state.intentos -= 1
+                st.warning(f"La letra '{letra.upper()}' no está en la palabra.")
+
+            st.rerun()
+
+        # Mostrar letras usadas
+        if st.session_state.letras_usadas:
+            letras_usadas = ", ".join(sorted(st.session_state.letras_usadas)).upper()
+            st.write(f"Letras usadas: {letras_usadas}")
+
+    # Título principal
+    st.title("🔢 Juego de Memorización Numérica")
+    st.markdown(
+        """
+        Memoriza la secuencia de números que aparece por unos segundos y luego escríbela en el mismo orden. 
+        ¡Pon a prueba tu memoria y sube de nivel! 🧠
+        """
+    )
+
+    # Inicialización de variables en la sesión
+    if 'nivel' not in st.session_state:
+        st.session_state.nivel = 1
+    if 'secuencia' not in st.session_state:
+        st.session_state.secuencia = [random.randint(0, 9) for _ in range(st.session_state.nivel + 4)]
+    if 'mostrar' not in st.session_state:
+        st.session_state.mostrar = True
+    if 'puntuacion' not in st.session_state:
+        st.session_state.puntuacion = 0
+
+    # Mostrar la secuencia de números
+    if st.session_state.mostrar:
+        st.subheader(f"🕒 Nivel {st.session_state.nivel}: Memoriza esta secuencia:")
+        st.markdown(
+            f"<h2 style='color: blue;'>{' '.join(map(str, st.session_state.secuencia))}</h2>",
+            unsafe_allow_html=True
+        )
+        # Botón para ocultar la secuencia y continuar
+        if st.button("🕶️ Ocultar y continuar"):
+            st.session_state.mostrar = False
+            time.sleep(2)
+            st.rerun()
+    else:
+        # Entrada del usuario para verificar la secuencia
+        respuesta = st.text_input("✍️ Escribe la secuencia (separa los números con comas):")
+        if st.button("✅ Verificar"):
+            try:
+                entrada = list(map(int, respuesta.split(',')))
+                if entrada == st.session_state.secuencia:
+                    st.success(f"🎉 ¡Correcto! Avanzas al siguiente nivel.")
+                    st.session_state.nivel += 1
+                    st.session_state.puntuacion += 10
+                else:
+                    st.error(
+                        f"❌ Incorrecto. La secuencia era: "
+                        f"<h2 style='color: red;'>{' '.join(map(str, st.session_state.secuencia))}</h2>",
+                        icon="💔",
+                    )
+                    st.session_state.puntuacion = max(0, st.session_state.puntuacion - 5)
+
+                # Generar nueva secuencia para el próximo nivel
+                st.session_state.secuencia = [random.randint(0, 9) for _ in range(st.session_state.nivel + 4)]
+                st.session_state.mostrar = True
+                st.rerun()
+            except ValueError:
+                st.error("⚠️ Asegúrate de escribir números separados por comas.")
+
+    # Mostrar puntuación y nivel al final del juego
+    st.subheader("📊 Progreso del Juego")
+    st.write(f"**Nivel Actual:** {st.session_state.nivel}")
+    st.write(f"**Puntuación:** {st.session_state.puntuacion}")
+
+    # Botón para reiniciar el juego
+    if st.button("🔄 Reiniciar Juego"):
+        st.session_state.nivel = 1
+        st.session_state.secuencia = [random.randint(0, 9) for _ in range(5)]
+        st.session_state.mostrar = True
+        st.session_state.puntuacion = 0
+        st.rerun()
 
     st.image(
         "Carta.png",
