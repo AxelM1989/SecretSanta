@@ -318,7 +318,7 @@ elif st.session_state.pista_actual == 6:
         st.success(f"¡Felicidades! Al adivinar todas las pistas, has descubierto el misterio: {nombre_correcto} es mi Secret Santa🎉")
         st.session_state.rinconcito_visible = True
         st.session_state.nombre_adivinado = True
-        if st.checkbox("Click para continuar"):
+        if st.checkbox("Desbloquear el Rinconcito de Tin"):
             st.write(
                 "Has completado el desafío con éxito. En el menú de la izquierda puedes acceder a El Rinconcito de Tin")
 
@@ -388,7 +388,7 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
 
     st.markdown("----")
     st.markdown("### 🎶 Escucha esta canción personalizada para él 🎧")
-    st.audio("El Gran Tin.mp3")
+    st.audio("Tin.mp3")
 
     st.markdown("----")
 
@@ -728,8 +728,10 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
 
     st.markdown("")
     st.audio("El Gran Tin.mp3")
-    
+        
     st.markdown("----")
+    st.markdown("")
+    st.markdown(" ")
     st.markdown(
     """
     <div style="text-align: right; color: purple; font-size: 18px;">
