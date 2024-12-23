@@ -2,7 +2,6 @@ import streamlit as st
 import random
 import time
 
-
 # Configuración de la página
 st.set_page_config(
     page_title="Secret Santa",
@@ -33,6 +32,7 @@ if "omitido" not in st.session_state:
 def avanzar_pista():
     st.session_state.pista_actual += 1
 
+
 # Configuración del menú
 menu = ["My Secret Santa"]
 if st.session_state.rinconcito_visible:
@@ -41,8 +41,6 @@ opcion = st.sidebar.radio("Menú", menu)
 
 # Nombre correcto
 nombre_correcto = "Agustin Ferreiro"
-
-
 
 # Página principal
 if opcion == "My Secret Santa":
@@ -103,9 +101,6 @@ st.markdown(
 
 st.divider()
 
-
-
-
 # --------- PISTA 1: Múltiple Choice con botón omitir ----------
 if st.session_state.pista_actual == 1:
     # Descripción introductoria
@@ -143,7 +138,7 @@ if st.session_state.pista_actual == 1:
     genero_seleccionado = st.radio(
         "¿Cuál crees que es el género más frecuente?",
         options=["Femenino", "Masculino"],
-        index = None
+        index=None
     )
 
     # Botón omitir
@@ -160,15 +155,15 @@ if st.session_state.pista_actual == 1:
         avanzar_pista()
         # Mostrar botón para avanzar si está desbloqueada la siguiente pista
         if st.button("Continuar a la siguiente pista ➡️"):
-                st.success("¡Bien hecho! Ahora puedes avanzar a la siguiente pista. 🎉")
-    elif genero_seleccionado =="Femenino":
+            st.success("¡Bien hecho! Ahora puedes avanzar a la siguiente pista. 🎉")
+    elif genero_seleccionado == "Femenino":
         st.error("La respuesta es incorrecta.")
 
 # --------- PISTA 2: Adivinar la Edad ----------
 elif st.session_state.pista_actual == 2:
     st.title("Pista 2: Adivina la Edad 🎯")
-    st.write("Intenta adivinar si el número que ingresas está dentro del rango correcto. No necesitas saber la edad exacta, solo si se encuentra en el rango. Usa tus intentos inteligentemente, tendrás solo 3.")
-
+    st.write(
+        "Intenta adivinar si el número que ingresas está dentro del rango correcto. No necesitas saber la edad exacta, solo si se encuentra en el rango. Usa tus intentos inteligentemente, tendrás solo 3.")
 
     # Parámetros
     rango_min = 25
@@ -210,9 +205,9 @@ elif st.session_state.pista_actual == 2:
 
     # Mostrar historial de intentos
     if st.session_state.historial_intentos:
-            st.write("### 📜 Historial de Intentos")
-            for i, intento in enumerate(st.session_state.historial_intentos, 1):
-                st.write(f"**Intento {i}:** {intento}")
+        st.write("### 📜 Historial de Intentos")
+        for i, intento in enumerate(st.session_state.historial_intentos, 1):
+            st.write(f"**Intento {i}:** {intento}")
     # Mostrar resultados solo cuando se completan los 3 intentos
     if st.session_state.intentos_restantes == 0:
         menor_intento = min(st.session_state.historial_intentos)
@@ -243,7 +238,8 @@ elif st.session_state.pista_actual == 3:
     st.code(codigo_sql, language='sql')
 
     # Input de función SQL
-    funcion_sql = st.text_input("¿Cuál es la función SQL que completa la consulta? Click enter para tomar el nombre").strip()
+    funcion_sql = st.text_input(
+        "¿Cuál es la función SQL que completa la consulta? Click enter para tomar el nombre").strip()
     # Botón omitir
     if st.button("Omitir"):
         st.session_state.omitido = True
@@ -268,9 +264,9 @@ elif st.session_state.pista_actual == 4:
     st.title("Pista 4: Datos sobre donde vive actualmente🏠")
     st.write("*Información complementaria:* 'Ciudad' es una variable con el nombre real de su ciudad")
 
-# Mostrar el código Python como pista
+    # Mostrar el código Python como pista
     st.code("""
-    
+
 print(len(ciudad))
 = 6
 """, language="python")
@@ -311,11 +307,11 @@ elif st.session_state.pista_actual == 5:
 
 elif st.session_state.pista_actual == 6:
 
-
     if len(st.session_state.pistas_adivinadas) >= 3:
         st.title("👏 Eres el/la **** amo/a 👨‍🎓👩‍🎓 🤴")
         st.subheader("Sherlock te está buscando 🕵️ 👀 ")
-        st.success(f"¡Felicidades! Al adivinar todas las pistas, has descubierto el misterio: {nombre_correcto} es mi Secret Santa🎉")
+        st.success(
+            f"¡Felicidades! Al adivinar todas las pistas, has descubierto el misterio: {nombre_correcto} es mi Secret Santa🎉")
         st.session_state.rinconcito_visible = True
         st.session_state.nombre_adivinado = True
         if st.checkbox("Desbloquear el Rinconcito de Tin"):
@@ -329,14 +325,14 @@ elif st.session_state.pista_actual == 6:
         st.write("Debido a que omitiste pistas, debes acertar el nombre exacto para ganar.")
         # Input para ingresar el nombre
         nombre_input = st.text_input("Ingresa el nombre exacto:").strip()
-    # Verificación del nombre
+        # Verificación del nombre
         if nombre_input.lower() == nombre_correcto.lower():
             st.success(f"¡Felicidades! Has descubierto el nombre: {nombre_correcto} es mi Secret Santa🎉")
             st.session_state.rinconcito_visible = True
             st.session_state.nombre_adivinado = True
             if st.checkbox("Desbloquear el Rinconcito de Tin"):
                 st.write(
-                 "Has completado el desafío con éxito. En el menú de la izquierda puedes acceder a El Rinconcito de Tin")
+                    "Has completado el desafío con éxito. En el menú de la izquierda puedes acceder a El Rinconcito de Tin")
 
 
         elif nombre_input:
@@ -354,7 +350,6 @@ elif st.session_state.pista_actual == 6:
 
             else:
                 st.error("Basta. ¿De verdad vas a seguir intentando?.")
-
 
 # --------- MENSAJE FINAL ----------
 
@@ -379,10 +374,8 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
         use_container_width=True,  # Ajuste para usar el ancho del contenedor
     )
 
-
     st.image(
         "Tipaso.jpg",
-
 
     )
 
@@ -398,8 +391,9 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
     st.markdown("")
     st.subheader("❓0️ Adivina el Número 🔢")
     st.markdown("")
-    st.write("Debes elegir un número random del 1 al 100 y te dirá si el número es alto o bajo. Lo podes intentar hasta que lo resuelvas."
-             "El puntaje se calcula de acuerdo con la cantidad de intentos. La fórmula es simple: el puntaje máximo es 100 y se reduce en 10 puntos por cada intento fallido. De esta forma, si el jugador adivina el número en el primer intento, obtiene un puntaje máximo. Si tarda más, el puntaje disminuye.")
+    st.write(
+        "Debes elegir un número random del 1 al 100 y te dirá si el número es alto o bajo. Lo podes intentar hasta que lo resuelvas."
+        "El puntaje se calcula de acuerdo con la cantidad de intentos. La fórmula es simple: el puntaje máximo es 100 y se reduce en 10 puntos por cada intento fallido. De esta forma, si el jugador adivina el número en el primer intento, obtiene un puntaje máximo. Si tarda más, el puntaje disminuye.")
 
     # Inicializar las variables en st.session_state si no están definidas
     if 'number' not in st.session_state:
@@ -434,39 +428,38 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
             st.session_state.attempts = 0
             st.session_state.score = 0  # Reiniciar el puntaje
 
-    st.info("Después de adivinar correctamente el número, el juego se reinicia con un nuevo número aleatorio y el puntaje se muestra.")
-
+    st.info(
+        "Después de adivinar correctamente el número, el juego se reinicia con un nuevo número aleatorio y el puntaje se muestra.")
 
     st.markdown("----")
     st.markdown("")
 
     # Título del juego
     st.subheader("Piedra🦪, Papel📄 o Tijera✂️")
-    
+
     # Opciones de elección
     options = ["Piedra", "Papel", "Tijera"]
-    
+
     # Estado inicial del juego
     if "game_started" not in st.session_state:
         st.session_state.game_started = False
-    
-    
+
     st.session_state.game_started = True
-    
+
     # Lógica del juego, solo si se ha iniciado
     if st.session_state.game_started:
         # Elección del usuario
         user_choice = st.selectbox("Elige: Piedra, Papel o Tijera", options, key="user_choice")
-    
+
         # Botón para jugar
         if st.button("Jugar"):
             # Elección de la computadora
             computer_choice = random.choice(options)
-    
+
             # Mostrar las elecciones
             st.write(f"Tú elegiste: {user_choice}")
             st.write(f"La computadora eligió: {computer_choice}")
-    
+
             # Determinar el resultado
             if user_choice == computer_choice:
                 st.write("¡Es un empate!")
@@ -479,8 +472,8 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
 
     st.markdown("----")
     st.markdown("")
-    
-       # Lista de palabras
+
+    # Lista de palabras
     palabras = [
         "Python", "SQL", "Power BI", "Tableau", "Looker", "Qlik Sense", "Streamlit",
         "Business Intelligence", "Data Analysis", "Data Science", "Data Engineering",
@@ -498,7 +491,7 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
         "Structured Data", "Table", "Left Join", "Inner Join", "Unique Key",
         "Web Analytics"
     ]
-    
+
     # Estado inicial del juego
     if "palabra_secreta" not in st.session_state:
         st.session_state.palabra_secreta = random.choice(palabras).lower()
@@ -507,10 +500,11 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
         ]
         st.session_state.intentos = 5
         st.session_state.letras_usadas = set()
-    
+
     st.title("Adivina la palabra")
-    st.write("Debes colocar letras hasta poder adivinar la palabra oculta. Tienes hasta 5 intentos fallidos. Las palabras son todas relacionadas al área de BI y dado que muchas de ellas son en inglés, para unificar criterios, todas las palabras incluidas que puedan aparecer, son en inglés")
-    
+    st.write(
+        "Debes colocar letras hasta poder adivinar la palabra oculta. Tienes hasta 5 intentos fallidos. Las palabras son todas relacionadas al área de BI y dado que muchas de ellas son en inglés, para unificar criterios, todas las palabras incluidas que puedan aparecer, son en inglés")
+
     # Mostrar progreso de la palabra
     progreso = "".join(
         [
@@ -520,7 +514,7 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
     )
     st.write(f"Palabra: {progreso}")
     st.write(f"Intentos restantes: {st.session_state.intentos}")
-    
+
     # Botón para reiniciar el juego
     if st.button("🔄 Reiniciar Juego"):
         st.session_state.palabra_secreta = random.choice(palabras).lower()
@@ -530,7 +524,7 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
         st.session_state.intentos = 5
         st.session_state.letras_usadas = set()
         st.rerun()
-    
+
     # Verificar si el usuario ha ganado o perdido
     if "_" not in progreso.replace("[ ]", " "):
         st.success(f"¡Felicidades! Has adivinado la palabra: {st.session_state.palabra_secreta.title()}")
@@ -539,26 +533,26 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
     else:
         # Entrada del usuario
         letra = st.text_input("Ingresa una letra:", max_chars=1).lower()
-    
+
         if letra and letra.isalpha() and letra not in st.session_state.letras_usadas:
             st.session_state.letras_usadas.add(letra)
-    
+
             # Actualizar la palabra oculta si la letra es correcta
             if letra in st.session_state.palabra_secreta:
                 st.success(f"¡Correcto! La letra '{letra.upper()}' está en la palabra.")
             else:
                 st.session_state.intentos -= 1
                 st.warning(f"La letra '{letra.upper()}' no está en la palabra.")
-    
+
             st.rerun()
-    
+
     # Mostrar letras usadas
     if st.session_state.letras_usadas:
         letras_usadas = ", ".join(sorted(st.session_state.letras_usadas)).upper()
         st.write(f"Letras usadas: {letras_usadas}")
 
     st.markdown("----")
-    
+
     # Título principal
     st.title("🔢 Juego de Memorización Numérica")
     st.markdown(
@@ -627,9 +621,9 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
         st.session_state.mostrar = True
         st.session_state.puntuacion = 0
         st.rerun()
-        
+
     st.markdown("----")
-    
+
     st.markdown(" ")
     # Configuración inicial del estado
     if "tiempo_restante" not in st.session_state:
@@ -640,12 +634,14 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
         st.session_state.correcto = None
         st.session_state.inicio = time.time()
         st.session_state.juego_activo = True
-    
+
+
     # Función para generar nueva suma
     def nueva_suma():
         st.session_state.numero1 = random.randint(1, 20)
         st.session_state.numero2 = random.randint(1, 20)
-    
+
+
     # Función para verificar respuesta
     def verificar_respuesta(respuesta):
         suma_correcta = st.session_state.numero1 + st.session_state.numero2
@@ -659,30 +655,32 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
             st.session_state.tiempo_restante -= 5
         # Actualizar inmediatamente
         st.rerun()
-    
+
+
     # Actualización del temporizador
     tiempo_actual = time.time()
     if st.session_state.juego_activo:
         tiempo_transcurrido = tiempo_actual - st.session_state.inicio
         st.session_state.tiempo_restante = max(0, st.session_state.tiempo_restante - tiempo_transcurrido)
         st.session_state.inicio = tiempo_actual
-    
+
     # Mostrar reloj en tiempo real
     st.title("🧮 Juego de Sumas Rápidas")
     st.write(f"⏱️ Tiempo restante: {st.session_state.tiempo_restante:.1f} segundos")
     st.write(f"🏆 Puntaje: {st.session_state.puntaje}")
-    
+
     if st.session_state.tiempo_restante > 0:
         # Mostrar suma actual
         st.subheader(f"¿Cuánto es {st.session_state.numero1} + {st.session_state.numero2}?")
-    
+
         # Campo para respuesta
-        respuesta_usuario = st.number_input("Escribe tu respuesta:", min_value=0, step=1, key="respuesta", label_visibility="collapsed")
-    
+        respuesta_usuario = st.number_input("Escribe tu respuesta:", min_value=0, step=1, key="respuesta",
+                                            label_visibility="collapsed")
+
         # Botón para verificar respuesta
         if st.button("Responder"):
             verificar_respuesta(respuesta_usuario)
-    
+
         # Mostrar si la respuesta fue correcta o incorrecta
         if st.session_state.correcto is not None:
             if st.session_state.correcto:
@@ -704,7 +702,7 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
             st.rerun()
 
     st.markdown("----")
-        
+
     st.subheader("Para mi amigo")
     st.image(
         "Carta.png",
@@ -713,14 +711,13 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
     )
 
     st.markdown("----")
-    
+
     st.image(
         "GOAT2.webp",
 
         use_container_width=True,  # Ajuste para usar el ancho del contenedor
     )
-    
-    
+
     st.markdown("### 🎶 Más canciones para él 🎧")
     st.audio("Para un amigo.mp3")
     st.markdown("")
@@ -728,15 +725,15 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
 
     st.markdown("")
     st.audio("El Gran Tin.mp3")
-        
+
     st.markdown("----")
     st.markdown("")
     st.markdown(" ")
     st.markdown(
-    """
-    <div style="text-align: right; color: purple; font-size: 18px;">
-        Made with 💜 by Axel Moriena
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+        """
+        <div style="text-align: right; color: purple; font-size: 18px;">
+            Made with 💜 by Axel Moriena
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
