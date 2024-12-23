@@ -441,110 +441,121 @@ if st.session_state.rinconcito_visible and opcion == "El Rinconcito de Tin":
     st.markdown("")
 
     # Título del juego
-    st.subheader("Piedra🦪, Papel📄 o Tijera✂️" )
-
+    st.subheader("Piedra🦪, Papel📄 o Tijera✂️")
+    
     # Opciones de elección
     options = ["Piedra", "Papel", "Tijera"]
-
-    # Elección del usuario
-    user_choice = st.selectbox("Elige: Piedra, Papel o Tijera", options)
-
-    # Elección de la computadora
-    computer_choice = random.choice(options)
-
-    # Mostrar las elecciones
-    st.write(f"Tú elegiste: {user_choice}")
-    st.write(f"La computadora eligió: {computer_choice}")
-
-    # Determinar el resultado
-    if user_choice == computer_choice:
-        st.write("¡Es un empate!")
-    elif (user_choice == "Piedra" and computer_choice == "Tijera") or \
-            (user_choice == "Papel" and computer_choice == "Piedra") or \
-            (user_choice == "Tijera" and computer_choice == "Papel"):
-        st.write("¡Ganaste!")
-    else:
-        st.write("¡Perdiste!")
+    
+    # Estado inicial del juego
+    if "game_started" not in st.session_state:
+        st.session_state.game_started = False
+    
+    
+    st.session_state.game_started = True
+    
+    # Lógica del juego, solo si se ha iniciado
+    if st.session_state.game_started:
+        # Elección del usuario
+        user_choice = st.selectbox("Elige: Piedra, Papel o Tijera", options, key="user_choice")
+    
+        # Botón para jugar
+        if st.button("Jugar"):
+            # Elección de la computadora
+            computer_choice = random.choice(options)
+    
+            # Mostrar las elecciones
+            st.write(f"Tú elegiste: {user_choice}")
+            st.write(f"La computadora eligió: {computer_choice}")
+    
+            # Determinar el resultado
+            if user_choice == computer_choice:
+                st.write("¡Es un empate!")
+            elif (user_choice == "Piedra" and computer_choice == "Tijera") or \
+                    (user_choice == "Papel" and computer_choice == "Piedra") or \
+                    (user_choice == "Tijera" and computer_choice == "Papel"):
+                st.write("¡Ganaste!")
+            else:
+                st.write("¡Perdiste!")
 
     st.markdown("----")
     st.markdown("")
 
-   # Lista de palabras
-palabras = [
-    "Python", "SQL", "Power BI", "Tableau", "Looker", "Qlik Sense", "Streamlit",
-    "Business Intelligence", "Data Analysis", "Data Science", "Data Engineering",
-    "Data Visualization", "Primary Key", "Foreign Key", "Key Performance Indicator",
-    "ETL", "ELT", "Data Mining", "Datawarehouse", "Data Lake", "Data Governance",
-    "Data Mart", "Database", "NO SQL", "Fact Table", "Dimension Table",
-    "Artificial Intelligence", "API", "Big Data", "Business Analytics", "Clustering",
-    "Cardinality", "Dashboard", "Data Modeling", "Data Source", "Data Transformation",
-    "Entity", "Exploratory Data Analysis", "Forecast", "Hierarchy", "Histogram",
-    "Hadoop", "Index", "Insights", "Internet Of Things", "JSON", "CSV", "Parquet",
-    "Avro", "Key", "Logical Model", "Machine Learning", "Measure", "Metric",
-    "Metadata", "Normalization", "Outlier", "Predictive Analysis", "Descriptive Analysis",
-    "Query", "Relationship", "Relational Database", "Report", "Row", "Schema",
-    "Segmentation", "Snowflake Model", "Star Model", "Stored Procedure",
-    "Structured Data", "Table", "Left Join", "Inner Join", "Unique Key",
-    "Web Analytics"
-]
-
-# Estado inicial del juego
-if "palabra_secreta" not in st.session_state:
-    st.session_state.palabra_secreta = random.choice(palabras).lower()
-    st.session_state.palabra_oculta = [
-        "_" if c != " " else " " for c in st.session_state.palabra_secreta
+       # Lista de palabras
+    palabras = [
+        "Python", "SQL", "Power BI", "Tableau", "Looker", "Qlik Sense", "Streamlit",
+        "Business Intelligence", "Data Analysis", "Data Science", "Data Engineering",
+        "Data Visualization", "Primary Key", "Foreign Key", "Key Performance Indicator",
+        "ETL", "ELT", "Data Mining", "Datawarehouse", "Data Lake", "Data Governance",
+        "Data Mart", "Database", "NO SQL", "Fact Table", "Dimension Table",
+        "Artificial Intelligence", "API", "Big Data", "Business Analytics", "Clustering",
+        "Cardinality", "Dashboard", "Data Modeling", "Data Source", "Data Transformation",
+        "Entity", "Exploratory Data Analysis", "Forecast", "Hierarchy", "Histogram",
+        "Hadoop", "Index", "Insights", "Internet Of Things", "JSON", "CSV", "Parquet",
+        "Avro", "Key", "Logical Model", "Machine Learning", "Measure", "Metric",
+        "Metadata", "Normalization", "Outlier", "Predictive Analysis", "Descriptive Analysis",
+        "Query", "Relationship", "Relational Database", "Report", "Row", "Schema",
+        "Segmentation", "Snowflake Model", "Star Model", "Stored Procedure",
+        "Structured Data", "Table", "Left Join", "Inner Join", "Unique Key",
+        "Web Analytics"
     ]
-    st.session_state.intentos = 5
-    st.session_state.letras_usadas = set()
-
-st.title("Adivina la palabra")
-st.write("Debes colocar letras hasta poder adivinar la palabra oculta. Tienes hasta 5 intentos fallidos. Las palabras son todas relacionadas al área de BI y dado que muchas de ellas son en inglés, para unificar criterios, todas las palabras incluidas que puedan aparecer, son en inglés")
-
-# Mostrar progreso de la palabra
-progreso = "".join(
-    [
-        c.upper() if c in st.session_state.letras_usadas else "_" if c != " " else "[ ]"
-        for c in st.session_state.palabra_secreta
-    ]
-)
-st.write(f"Palabra: {progreso}")
-st.write(f"Intentos restantes: {st.session_state.intentos}")
-
-# Botón para reiniciar el juego
-if st.button("🔄 Reiniciar Juego"):
-    st.session_state.palabra_secreta = random.choice(palabras).lower()
-    st.session_state.palabra_oculta = [
-        "_" if c != " " else " " for c in st.session_state.palabra_secreta
-    ]
-    st.session_state.intentos = 5
-    st.session_state.letras_usadas = set()
-    st.rerun()
-
-# Verificar si el usuario ha ganado o perdido
-if "_" not in progreso.replace("[ ]", " "):
-    st.success(f"¡Felicidades! Has adivinado la palabra: {st.session_state.palabra_secreta.title()}")
-elif st.session_state.intentos <= 0:
-    st.error(f"¡Has perdido! La palabra era: {st.session_state.palabra_secreta.title()}")
-else:
-    # Entrada del usuario
-    letra = st.text_input("Ingresa una letra:", max_chars=1).lower()
-
-    if letra and letra.isalpha() and letra not in st.session_state.letras_usadas:
-        st.session_state.letras_usadas.add(letra)
-
-        # Actualizar la palabra oculta si la letra es correcta
-        if letra in st.session_state.palabra_secreta:
-            st.success(f"¡Correcto! La letra '{letra.upper()}' está en la palabra.")
-        else:
-            st.session_state.intentos -= 1
-            st.warning(f"La letra '{letra.upper()}' no está en la palabra.")
-
+    
+    # Estado inicial del juego
+    if "palabra_secreta" not in st.session_state:
+        st.session_state.palabra_secreta = random.choice(palabras).lower()
+        st.session_state.palabra_oculta = [
+            "_" if c != " " else " " for c in st.session_state.palabra_secreta
+        ]
+        st.session_state.intentos = 5
+        st.session_state.letras_usadas = set()
+    
+    st.title("Adivina la palabra")
+    st.write("Debes colocar letras hasta poder adivinar la palabra oculta. Tienes hasta 5 intentos fallidos. Las palabras son todas relacionadas al área de BI y dado que muchas de ellas son en inglés, para unificar criterios, todas las palabras incluidas que puedan aparecer, son en inglés")
+    
+    # Mostrar progreso de la palabra
+    progreso = "".join(
+        [
+            c.upper() if c in st.session_state.letras_usadas else "_" if c != " " else "[ ]"
+            for c in st.session_state.palabra_secreta
+        ]
+    )
+    st.write(f"Palabra: {progreso}")
+    st.write(f"Intentos restantes: {st.session_state.intentos}")
+    
+    # Botón para reiniciar el juego
+    if st.button("🔄 Reiniciar Juego"):
+        st.session_state.palabra_secreta = random.choice(palabras).lower()
+        st.session_state.palabra_oculta = [
+            "_" if c != " " else " " for c in st.session_state.palabra_secreta
+        ]
+        st.session_state.intentos = 5
+        st.session_state.letras_usadas = set()
         st.rerun()
-
-# Mostrar letras usadas
-if st.session_state.letras_usadas:
-    letras_usadas = ", ".join(sorted(st.session_state.letras_usadas)).upper()
-    st.write(f"Letras usadas: {letras_usadas}")
+    
+    # Verificar si el usuario ha ganado o perdido
+    if "_" not in progreso.replace("[ ]", " "):
+        st.success(f"¡Felicidades! Has adivinado la palabra: {st.session_state.palabra_secreta.title()}")
+    elif st.session_state.intentos <= 0:
+        st.error(f"¡Has perdido! La palabra era: {st.session_state.palabra_secreta.title()}")
+    else:
+        # Entrada del usuario
+        letra = st.text_input("Ingresa una letra:", max_chars=1).lower()
+    
+        if letra and letra.isalpha() and letra not in st.session_state.letras_usadas:
+            st.session_state.letras_usadas.add(letra)
+    
+            # Actualizar la palabra oculta si la letra es correcta
+            if letra in st.session_state.palabra_secreta:
+                st.success(f"¡Correcto! La letra '{letra.upper()}' está en la palabra.")
+            else:
+                st.session_state.intentos -= 1
+                st.warning(f"La letra '{letra.upper()}' no está en la palabra.")
+    
+            st.rerun()
+    
+    # Mostrar letras usadas
+    if st.session_state.letras_usadas:
+        letras_usadas = ", ".join(sorted(st.session_state.letras_usadas)).upper()
+        st.write(f"Letras usadas: {letras_usadas}")
 
     # Título principal
     st.title("🔢 Juego de Memorización Numérica")
